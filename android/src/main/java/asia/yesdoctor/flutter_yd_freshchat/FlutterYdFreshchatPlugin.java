@@ -136,12 +136,13 @@ public class FlutterYdFreshchatPlugin implements MethodCallHandler {
         result.success(true);
         break;
       case METHOD_GET_UNREAD_MESSAGE_COUNT:
+        final ArrayList unread_tags = call.argument("tags");
         Freshchat.getInstance(this.application.getApplicationContext()).getUnreadCountAsync(new UnreadCountCallback() {
           @Override
           public void onResult(FreshchatCallbackStatus freshchatCallbackStatus, int i) {
             result.success(i);
           }
-        });
+        }, unread_tags);
         break;
       case METHOD_SETUP_PUSH_NOTIFICATIONS:
         final String token = call.argument("token");

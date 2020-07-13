@@ -111,9 +111,18 @@ public class SwiftFlutterYdFreshchatPlugin: NSObject, FlutterPlugin {
                 result(true)
 
             case SwiftFlutterYdFreshchatPlugin.METHOD_GET_UNREAD_MESSAGE_COUNT:
-                Freshchat.sharedInstance().unreadCount { (count:Int) -> Void in
-                    result(count)
+                let tags = arguments["tags"] as! [String]
+
+                if (tags.count > 0) {
+                   Freshchat.sharedInstance().unreadCountWithCompletion { (count:Int) -> Void in
+                       result(count)
+                   }
+                } else {
+                   Freshchat.sharedInstance().unreadCountForTags(tags) { (count:Int) -> Void in
+                       result(count)
+                   }
                 }
+
 
             case SwiftFlutterYdFreshchatPlugin.METHOD_SETUP_PUSH_NOTIFICATIONS:
                 let arguments = call.arguments as! [String: String]

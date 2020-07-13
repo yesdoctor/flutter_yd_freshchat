@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initPlatformState() async {
     await FlutterYdFreshchat.init(
-        appID: "dbe16e0b-bcb9-4bba-a625-10ef63d2c67b", appKey: "fffe9df4-8dd5-404b-92fa-11998eb7e57f");
+        appID: "APP_ID", appKey: "APP_KEY");
   }
 
   @override

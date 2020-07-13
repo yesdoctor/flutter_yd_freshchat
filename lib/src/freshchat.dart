@@ -139,8 +139,11 @@ class FlutterYdFreshchat {
   }
 
   /// Gets the unseen message count from freshchat you can use this to show a counter.
-  static Future<int> getUnreadMsgCount() async {
-    final int result = await _channel.invokeMethod('getUnreadMsgCount');
+  static Future<int> getUnreadMsgCount({List<String> tags = const []}) async {
+    final Map<String, dynamic> params = <String, dynamic>{
+      "tags": tags
+    };
+    final int result = await _channel.invokeMethod('getUnreadMsgCount', params);
     return result;
   }
 
