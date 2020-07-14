@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_apns/apns.dart';
 import 'dart:async';
 import 'update_userinfo_screen.dart';
 import 'package:localstorage/localstorage.dart';
@@ -13,6 +14,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final connector = createPushConnector();
+
   List<Item> items = [
     Item(
         text: 'Update User Info',
@@ -71,13 +74,38 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     initPlatformState();
   }
 
   Future<void> initPlatformState() async {
-    await FlutterYdFreshchat.init(
-        appID: "APP_ID", appKey: "APP_KEY");
+    await FlutterYdFreshchat.init(appID: "APP_ID", appKey: "APP_KEY");
+    await initFirebase();
   }
+
+  Future<void> initFirebase() async {
+    connector.configure(
+      onLaunch: (data) => onPush("onLaunch", data),
+      onResume: (data) => onPush('onResume', data),
+      onMessage: (data) => onPush('onMessage', data),
+      onBackgroundMessage: _onBackgroundMessage,
+    );
+    connector.token.addListener(() {
+      print('Token ${connector.token.value}');
+      FlutterYdFreshchat.setupPushNotifications(token: connector.token.value);
+    });
+    connector.requestNotificationPermissions();
+  }
+
+  Future<dynamic> onPush(String name, Map<String, dynamic> data) {
+    print(data);
+    print(name);
+    FlutterYdFreshchat.handleNotification(remoteMessage: data);
+    return Future.value();
+  }
+
+  Future<dynamic> _onBackgroundMessage(Map<String, dynamic> data) =>
+      onPush('onBackgroundMessage', data);
 
   @override
   Widget build(BuildContext context) {

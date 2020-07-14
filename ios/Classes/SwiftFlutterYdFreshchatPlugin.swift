@@ -10,6 +10,7 @@ public class SwiftFlutterYdFreshchatPlugin: NSObject, FlutterPlugin {
     private static let METHOD_SHOW_FAQS = "showFAQs"
     private static let METHOD_GET_UNREAD_MESSAGE_COUNT = "getUnreadMsgCount"
     private static let METHOD_SETUP_PUSH_NOTIFICATIONS = "setupPushNotifications"
+    private static let METHOD_HANDLE_NOTIFICATION = "handleNotification"
     private static let METHOD_SEND_MESSAGE = "send"
     private let registrar: FlutterPluginRegistrar
 
@@ -111,24 +112,24 @@ public class SwiftFlutterYdFreshchatPlugin: NSObject, FlutterPlugin {
                 result(true)
 
             case SwiftFlutterYdFreshchatPlugin.METHOD_GET_UNREAD_MESSAGE_COUNT:
+                let arguments = call.arguments as! [String: Any]
                 let tags = arguments["tags"] as! [String]
 
-                if (tags.count > 0) {
-                   Freshchat.sharedInstance().unreadCountWithCompletion { (count:Int) -> Void in
-                       result(count)
-                   }
-                } else {
-                   Freshchat.sharedInstance().unreadCountForTags(tags) { (count:Int) -> Void in
-                       result(count)
-                   }
-                }
-
+                Freshchat.sharedInstance().unreadCount { (count:Int) -> Void in
+                                        result(count)
+                                    }
 
             case SwiftFlutterYdFreshchatPlugin.METHOD_SETUP_PUSH_NOTIFICATIONS:
                 let arguments = call.arguments as! [String: String]
                 let token:String = arguments["token"] ?? ""
                 Freshchat.sharedInstance().setPushRegistrationToken(token.data(using: .utf8)!)
                 result(true)
+
+            case SwiftFlutterYdFreshchatPlugin.METHOD_HANDLE_NOTIFICATION:
+                            let arguments = call.arguments as! [String: String]
+                            let token:String = arguments["token"] ?? ""
+                            Freshchat.sharedInstance().setPushRegistrationToken(token.data(using: .utf8)!)
+                            result(true)
 
             case SwiftFlutterYdFreshchatPlugin.METHOD_RESET_USER:
                 Freshchat.sharedInstance().resetUser(completion: { () in

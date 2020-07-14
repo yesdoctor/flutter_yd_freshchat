@@ -157,6 +157,18 @@ class FlutterYdFreshchat {
     return result;
   }
 
+  static Future<bool> handleNotification({@required remoteMessage}) async {
+    print(remoteMessage["data"]);
+    final Map<String, dynamic> params = <String, dynamic>{"data": remoteMessage["data"]};
+
+    print(params);
+
+    final bool result =
+    await _channel.invokeMethod('handleNotification', params);
+
+    return result;
+  }
+
   /// Send message
   static Future<bool> send({@required String message, String tag}) async {
     final Map<String, dynamic> params = <String, dynamic>{

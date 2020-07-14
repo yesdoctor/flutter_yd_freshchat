@@ -15,6 +15,7 @@ import com.freshchat.consumer.sdk.FreshchatMessage;
 import com.freshchat.consumer.sdk.ConversationOptions;
 import com.freshchat.consumer.sdk.UnreadCountCallback;
 import com.freshchat.consumer.sdk.exception.MethodNotAllowedException;
+import com.google.firebase.messaging.RemoteMessage;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -33,6 +34,7 @@ public class FlutterYdFreshchatPlugin implements MethodCallHandler {
   private static final String METHOD_SHOW_FAQS = "showFAQs";
   private static final String METHOD_GET_UNREAD_MESSAGE_COUNT = "getUnreadMsgCount";
   private static final String METHOD_SETUP_PUSH_NOTIFICATIONS = "setupPushNotifications";
+  private static final String METHOD_HANDLE_NOTIFICATION = "handleNotification";
   private static final String METHOD_SEND_MESSAGE = "send";
 
   public static void registerWith(Registrar registrar) {
@@ -147,6 +149,20 @@ public class FlutterYdFreshchatPlugin implements MethodCallHandler {
       case METHOD_SETUP_PUSH_NOTIFICATIONS:
         final String token = call.argument("token");
         Freshchat.getInstance(this.application.getApplicationContext()).setPushRegistrationToken(token);
+        result.success(true);
+        break;
+      case METHOD_HANDLE_NOTIFICATION:
+        final Map<String, String> data = call.argument("data");
+
+        RemoteMessage remoteMessage = new RemoteMessage.Builder("hello@gcm.googleapis.com")
+                .setMessageId("")
+                .setData(data)
+                .build();
+
+        if (Freshchat.isFreshchatNotification(remoteMessage)) {
+          Freshchat.handleFcmMessage(this.application.getApplicationContext(), remoteMessage);
+        }
+
         result.success(true);
         break;
       case METHOD_RESET_USER:
