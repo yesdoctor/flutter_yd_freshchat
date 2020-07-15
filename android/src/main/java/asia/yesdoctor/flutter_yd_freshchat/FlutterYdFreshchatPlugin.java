@@ -35,6 +35,7 @@ public class FlutterYdFreshchatPlugin implements MethodCallHandler {
   private static final String METHOD_GET_UNREAD_MESSAGE_COUNT = "getUnreadMsgCount";
   private static final String METHOD_SETUP_PUSH_NOTIFICATIONS = "setupPushNotifications";
   private static final String METHOD_HANDLE_NOTIFICATION = "handleNotification";
+  private static final String METHOD_IS_FRESHCHAT_NOTIFICATION = "isFreshchatNotification";
   private static final String METHOD_SEND_MESSAGE = "send";
 
   public static void registerWith(Registrar registrar) {
@@ -138,13 +139,12 @@ public class FlutterYdFreshchatPlugin implements MethodCallHandler {
         result.success(true);
         break;
       case METHOD_GET_UNREAD_MESSAGE_COUNT:
-        final ArrayList unread_tags = call.argument("tags");
         Freshchat.getInstance(this.application.getApplicationContext()).getUnreadCountAsync(new UnreadCountCallback() {
           @Override
           public void onResult(FreshchatCallbackStatus freshchatCallbackStatus, int i) {
             result.success(i);
           }
-        }, unread_tags);
+        });
         break;
       case METHOD_SETUP_PUSH_NOTIFICATIONS:
         final String token = call.argument("token");
@@ -164,6 +164,16 @@ public class FlutterYdFreshchatPlugin implements MethodCallHandler {
         }
 
         result.success(true);
+        break;
+      case METHOD_IS_FRESHCHAT_NOTIFICATION:
+        Map<String, String> data1 = call.argument("data");
+
+        RemoteMessage remoteMessage1 = new RemoteMessage.Builder("hello@gcm.googleapis.com")
+                .setMessageId("")
+                .setData(data1)
+                .build();
+
+        result.success(Freshchat.isFreshchatNotification(remoteMessage1));
         break;
       case METHOD_RESET_USER:
         Freshchat.resetUser(this.application.getApplicationContext());
