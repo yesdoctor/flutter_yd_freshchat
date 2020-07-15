@@ -93,6 +93,12 @@ class FlutterYdFreshchat {
     return result;
   }
 
+  static Future<String> getRestoreId() async {
+
+    final String result = await _channel.invokeMethod("getRestoreId");
+    return result;
+  }
+
   /// Reset user data at logout or when deemed appropriate based on user action
   /// in the app.
   static Future<bool> resetUser() async {

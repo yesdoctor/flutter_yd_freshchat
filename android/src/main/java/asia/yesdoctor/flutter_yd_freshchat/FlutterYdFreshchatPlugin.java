@@ -28,6 +28,7 @@ public class FlutterYdFreshchatPlugin implements MethodCallHandler {
 
   private static final String METHOD_INIT = "init";
   private static final String METHOD_IDENTIFY_USER = "identifyUser";
+  private static final String METHOD_GET_RESTORE_ID = "getRestoreId";
   private static final String METHOD_UPDATE_USER_INFO = "updateUserInfo";
   private static final String METHOD_RESET_USER = "reset";
   private static final String METHOD_SHOW_CONVERSATIONS = "showConversations";
@@ -86,6 +87,10 @@ public class FlutterYdFreshchatPlugin implements MethodCallHandler {
           result.error("Error while identifying User", "error", e);
         }
         result.success(restoreId);
+        break;
+      case METHOD_GET_RESTORE_ID:
+        String userRestoreId = Freshchat.getInstance(this.application.getApplicationContext()).getUser().getRestoreId();
+        result.success(userRestoreId);
         break;
       case METHOD_UPDATE_USER_INFO:
         final String firstName = call.argument("first_name");
