@@ -4,7 +4,7 @@ import UIKit
 public class SwiftFlutterYdFreshchatPlugin: NSObject, FlutterPlugin {
     private static let METHOD_INIT = "init"
     private static let METHOD_IDENTIFY_USER = "identifyUser"
-    private static let METHOD METHOD_GET_RESTORE_ID = "getRestoreId";
+    private static let METHOD_GET_RESTORE_ID = "getRestoreId";
     private static let METHOD_UPDATE_USER_INFO = "updateUserInfo"
     private static let METHOD_RESET_USER = "reset"
     private static let METHOD_SHOW_CONVERSATIONS = "showConversations"
