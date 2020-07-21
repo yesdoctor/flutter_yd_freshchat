@@ -71,7 +71,7 @@ public class SwiftFlutterYdFreshchatPlugin: NSObject, FlutterPlugin {
                 result(restoreId)
 
             case SwiftFlutterYdFreshchatPlugin.METHOD_GET_RESTORE_ID:
-                restoreId = FreshchatUser.sharedInstance().restoreID
+                var userRestoreId = FreshchatUser.sharedInstance().restoreID
                 result(restoreId)
 
             case SwiftFlutterYdFreshchatPlugin.METHOD_UPDATE_USER_INFO:
