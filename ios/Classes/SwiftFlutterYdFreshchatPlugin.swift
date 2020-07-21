@@ -72,7 +72,7 @@ public class SwiftFlutterYdFreshchatPlugin: NSObject, FlutterPlugin {
 
             case SwiftFlutterYdFreshchatPlugin.METHOD_GET_RESTORE_ID:
                 var userRestoreId = FreshchatUser.sharedInstance().restoreID
-                result(restoreId)
+                result(userRestoreId)
 
             case SwiftFlutterYdFreshchatPlugin.METHOD_UPDATE_USER_INFO:
                 let arguments = call.arguments as! [String: Any]
