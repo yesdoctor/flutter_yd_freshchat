@@ -124,14 +124,17 @@ public class SwiftFlutterYdFreshchatPlugin: NSObject, FlutterPlugin {
             case SwiftFlutterYdFreshchatPlugin.METHOD_SETUP_PUSH_NOTIFICATIONS:
                 let arguments = call.arguments as! [String: String]
                 let token:String = arguments["token"] ?? ""
-                Freshchat.sharedInstance().setPushRegistrationToken(token.data(using: .utf8)!)
+                Freshchat.sharedInstance().setPushRegistrationToken(token)
                 result(true)
 
             case SwiftFlutterYdFreshchatPlugin.METHOD_HANDLE_NOTIFICATION:
-                            let arguments = call.arguments as! [String: String]
-                            let token:String = arguments["token"] ?? ""
-                            Freshchat.sharedInstance().setPushRegistrationToken(token.data(using: .utf8)!)
-                            result(true)
+                let arguments = call.arguments as! [String: Any]
+                let userInfo = arguments["data"] ?? ""
+
+                if Freshchat.sharedInstance().isFreshchatNotification(userInfo) {
+                   Freshchat.sharedInstance().handleRemoteNotification(userInfo, andAppstate: application.applicationState)
+                }
+                result(true)
 
             case SwiftFlutterYdFreshchatPlugin.METHOD_RESET_USER:
                 Freshchat.sharedInstance().resetUser(completion: { () in
