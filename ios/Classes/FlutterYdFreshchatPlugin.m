@@ -137,7 +137,7 @@ static const NSString* METHOD_IS_FRESHCHAT_NOTIFICATION = @"isFreshchatNotificat
       result([NSNumber numberWithBool:YES]);
   }
   else if ([METHOD_HANDLE_NOTIFICATION isEqualToString:call.method]) {
-        const NSDictionary* userInfo = call.arguments[@"data"];
+        const NSDictionary *userInfo = call.arguments[@"data"];
       NSLog(@"Hello");
 
       if ([[Freshchat sharedInstance]isFreshchatNotification:userInfo]) {
@@ -146,7 +146,7 @@ static const NSString* METHOD_IS_FRESHCHAT_NOTIFICATION = @"isFreshchatNotificat
       result([NSNumber numberWithBool:YES]);
   }
   else if ([METHOD_IS_FRESHCHAT_NOTIFICATION isEqualToString:call.method]) {
-      const NSDictionary* userInfo = call.arguments[@"data"];
+      const NSDictionary *userInfo = call.arguments[@"data"];
       
       BOOL isFreshchatNotification =[[Freshchat sharedInstance]isFreshchatNotification:userInfo];
 
